@@ -1,0 +1,169 @@
+* {
+    box-sizing: border-box; 
+}
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #fff;
+}
+:hover::-webkit-scrollbar-thumb {
+    background: #1fcecb;
+}
+::-webkit-resizer:horizontal {
+    height: 10px;
+}
+html {
+	padding:0;
+    margin:0;
+    background-color: #FFF;
+    color: #7b3f00;
+    font-family: "Times New Roman";
+    font-weight: 900;
+    font-stretch: semi-condensed;
+    font-style: oblique;
+}
+header{
+    display: inline-flex;
+    width: 100%;
+    margin: 15px auto;
+}
+body{
+    background-color: #FFFDF4E3;
+    width: 100%;
+    max-width: 1024px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+button:active, button:focus, input:active, input:focus {
+    outline: none !important;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0 !important;
+}
+footer{
+    display: flex;
+    justify-content: space-between;
+    padding:0;
+    margin: 10px auto;
+    border-top: 1px solid #CCC;
+}
+button{
+    font-family: "Times New Roman";
+    font-weight: 700;
+    font-stretch: semi-condensed;
+    font-style: oblique;
+    width: fit-content;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: .2s linear;
+    border: none;
+    color: #7b3f00;
+    height: 25px;
+}
+button:hover{
+    box-shadow: inset 0 0 0 1.5px #7b3f00;
+}
+input{
+    font-family: "Times New Roman";
+    font-weight: 900;
+    font-stretch: semi-condensed;
+    font-style: oblique;
+    text-align: right;
+    font-size: large;
+    border-radius: 3px;
+    color: #7b3f00;
+    margin: 3px;
+}
+form div h1{
+    margin: 0 0 10px 0;
+}
+form div a{
+    float: right;
+}
+.registrButton h6{
+    margin-top: 10px;
+}
+.registrButton{
+    margin-top: 15px;
+    display: inline-flex;
+}
+#login, #logout{
+    height: 50px;
+    font-size: 20pt;
+    margin-top: 18px;
+}
+#logout{
+    display: none;
+}
+#body{
+    margin: auto;
+    padding: 0;
+    height: -webkit-fill-available;
+}
+#rf, #lf{
+    margin:0;
+    padding:15px 0;
+    line-height:normal;
+}
+#lf p{
+   /* text-transform: capitalize;*/
+    margin: 0 auto;
+}
+#rh{
+    display: inline-flex;
+    margin-left: auto;
+    margin-right: 0;
+}
+#openloginWindow {
+    background: rgba(102, 102, 102, 0.5);
+    width: 100%;
+    height: -webkit-fill-available;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#loginWindow, #registrWindow{
+    width: 300px;
+    height: fit-content;
+    text-align: center;
+    padding: 15px;
+    border: 3px solid #7b3f00;
+    border-radius: 10px;
+    color: #7b3f00;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    background: #FFFDF4E3;
+}
+#loginWindow button, #registrWindow button{
+    margin-top: 3px;
+}
+.close {
+    border: 1px solid #7b3f00;
+    color: #7b3f00;
+    padding: 0 5px;
+    text-decoration: none;
+    background: #FFFDF4E3;
+    cursor:pointer;
+    float: right;
+}
+.close:hover {
+    background: #FFFDF4E3;
+}
+
+#loginWindow{
+    display: block;
+}
+#registrWindow{
+    display: none;
+}

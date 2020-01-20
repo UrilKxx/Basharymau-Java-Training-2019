@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="js/script.js"></script>
+        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <title></title>
+    </head>
+    <body onload="clock()">
+        <header>
+            <div id="lh">
+                <a ><img src="images/logo.png"  height="100px"></a>
+            </div>
+            <div id="rh">
+                <h1 id="loginName">Гость</h1>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" id="login" onclick="openLoginForm()">Вход</button>
+                <button type="button" id="logout"  onclick="logOut()">Выход</button>
+            </div>
+        </header>
+        <div id="body">
+            <h1 id="title">Главная страница</h1>
+            <p>Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании существенных финансовых и административных условий. С другой стороны постоянное информационно-пропагандистское обеспечение нашей деятельности обеспечивает широкому кругу (специалистов) участие в формировании позиций, занимаемых участниками в отношении поставленных задач.</p>
+            <p>Значимость этих проблем настолько очевидна, что дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании новых предложений. Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании существенных финансовых и административных условий.</p>
+            <p>Повседневная практика показывает, что реализация намеченных плановых заданий в значительной степени обуславливает создание модели развития. С другой стороны укрепление и развитие структуры обеспечивает участие в формировании систем массового участия.</p>
+        </div>
+        <div id="openloginWindow">
+            <div id="loginWindow">
+                <form name="loginForm" action="">
+                    <div>
+                        <button type="button" onclick="closeForm()" class="close">&times;</button>
+                        <h1>Вход</h1>
+                        <label id="loginFormMessage"></label>
+                        <input type="text" placeholder="Введите логин" name="login" required>
+                        <input type="password" placeholder="Введите пароль" name="password" required>
+                        <button type="button" onclick="logIn()">Войти</button>
+                    </div>
+                    <div class="registrButton">
+                        <h6>Вы еще не с нами?&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                        <button type="button" onclick="openRegistrationForm()">Регистрация</button>
+                    </div> 
+                  </form>
+            </div>
+            <div id="registrWindow">
+                <form name="registrForm" action="">
+                    <div>
+                        <button type="button" onclick="closeForm()" class="close">&times;</button>
+                        <h1>Регистрация</h1>
+                        <input type="text" placeholder="Введите логин" name="login" required>
+                        <input type="text" placeholder="Введите e-mail" name="email" required>
+                        <input type="password" placeholder="Введите пароль" name="password1" required>
+                        <input type="password" placeholder="Повторите пароль" name="password2" required>
+                        <label id="registrWindowMessage"></label>
+                        <div class="registrButton">
+                            <button type="button" onclick="openLoginForm()">Вход</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" onclick="signUp()">Регистрация</button>
+                        </div> 
+                    </div>
+                  </form>
+            </div>
+
+
+        </div>
+
+        <footer>
+            <div id="lf">
+                © Башаримов Юрий Сергеевич ИТП-31 ЮКО Inc. Все права защищены 
+            </div>
+            <div id="rf">
+                <a href="https://vk.com/id117034606" ><img src="images/vk_icon-icons.com_66681.png" alt="Vk" width="25px" height="25px" ></a>
+                <a href="https://twitter.com/zxasv1999" ><img src="images/1486053611-twitter_79195.png" alt="Google" width="25px" height="25px" ></a>
+                <a href="https://plus.google.com/u/0/" ><img src="images/1486053612-googleplus_79196 (1).png" alt="Twitter" width="25px" height="25px" ></a>
+            </div>
+        </footer>
+    </body>
+</html>
