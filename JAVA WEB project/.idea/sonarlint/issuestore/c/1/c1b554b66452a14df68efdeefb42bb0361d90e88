@@ -1,0 +1,27 @@
+
+Œ"squid:ClassVariableVisibilityCheck"[Make mysqlConnection a static final constant or non-public and provide accessors if needed.(µ‰Â›ÿÿÿÿÿ
+Š"squid:ClassVariableVisibilityCheck"YMake mysqlUsername a static final constant or non-public and provide accessors if needed.(×¦Ã‰şÿÿÿÿ
+…"squid:ClassVariableVisibilityCheck"YMake mysqlPassword a static final constant or non-public and provide accessors if needed.(˜¿ä·
+Š"squid:ClassVariableVisibilityCheck"^Make select_courses_sql a static final constant or non-public and provide accessors if needed.(Ì“Á
+™"squid:ClassVariableVisibilityCheck"hMake select_teacher_on_course_sql a static final constant or non-public and provide accessors if needed.(Ä–Ø ÿÿÿÿÿ
+•"squid:ClassVariableVisibilityCheck"iMake select_students_on_course_sql a static final constant or non-public and provide accessors if needed.(ï»×
+Š"squid:ClassVariableVisibilityCheck"^Make insert_courses_sql a static final constant or non-public and provide accessors if needed.(òÇêÒ
+‹"squid:ClassVariableVisibilityCheck"_Make insert_feedback_sql a static final constant or non-public and provide accessors if needed.(‹ßÔ”
+“"squid:ClassVariableVisibilityCheck"gMake insert_courses_students_sql a static final constant or non-public and provide accessors if needed.(ÿÛşÀ
+Š"squid:ClassVariableVisibilityCheck"^Make update_courses_sql a static final constant or non-public and provide accessors if needed.(»àª˜
+‹"squid:ClassVariableVisibilityCheck"_Make select_students_sql a static final constant or non-public and provide accessors if needed.(Éèé•
+Š"squid:ClassVariableVisibilityCheck"^Make insert_student_sql a static final constant or non-public and provide accessors if needed.(î· Ó
+‹"squid:ClassVariableVisibilityCheck"_Make select_teachers_sql a static final constant or non-public and provide accessors if needed.(êüË‰
+Š"squid:ClassVariableVisibilityCheck"^Make insert_teacher_sql a static final constant or non-public and provide accessors if needed.(î´í 
+ssquid:S00116"]Rename this field "select_courses_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ì“Á
+‚squid:S00116"gRename this field "select_teacher_on_course_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ä–Ø ÿÿÿÿÿ
+~squid:S00116"hRename this field "select_students_on_course_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï»×
+ssquid:S00116"]Rename this field "insert_courses_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(òÇêÒ
+tsquid:S00116"^Rename this field "insert_feedback_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹ßÔ”
+|squid:S00116"fRename this field "insert_courses_students_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿÛşÀ
+ssquid:S00116"]Rename this field "update_courses_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»àª˜
+tsquid:S00116"^Rename this field "select_students_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Éèé•
+ssquid:S00116"]Rename this field "insert_student_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(î· Ó
+tsquid:S00116"^Rename this field "select_teachers_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êüË‰
+ssquid:S00116"]Rename this field "insert_teacher_sql" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(î´í 
+ksquid:S2068"V'Password' detected in this expression, review this potentially hard-coded credential.(˜¿ä·

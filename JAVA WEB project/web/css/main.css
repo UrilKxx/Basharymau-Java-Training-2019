@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box; 
+}
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #fff;
+}
+:hover::-webkit-scrollbar-thumb {
+    background: #1fcecb;
+}
+::-webkit-resizer:horizontal {
+    height: 10px;
+}
+html {
+	padding:0;
+    margin:0;
+    background-color: #FFF;
+    color: #7b3f00;
+    font-family: "Times New Roman";
+    font-weight: 900;
+    font-stretch: semi-condensed;
+    font-style: oblique;
+}
+header{
+    display: inline-flex;
+    width: 100%;
+    margin: 15px auto;
+}
+body{
+    background-color: #FFFDF4E3;
+    width: 100%;
+    max-width: 1024px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+button:active, button:focus, input:active, input:focus {
+    outline: none !important;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0 !important;
+}
+nav{
+    border-bottom: 1px solid #CCC;
+    display: inline-flex;
+    width: 100%;
+}
+footer{
+    display: flex;
+    justify-content: space-between;
+    padding:0;
+    margin: 10px auto;
+    border-top: 1px solid #CCC;
+}
+#body{
+    margin: auto;
+    padding: 0;
+    height: -webkit-fill-available;
+}
+#nav_menu ul{
+    list-style: none;
+}
+#nav_menu > ul > li{
+    float: left;
+    position: relative;
+    cursor: pointer;
+}
+#nav_menu li a{
+    color: #7b3f00;
+    display: block;
+    background: #FFF;
+    border: 1px solid #7b3f00;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    transition: .3s ease-in-out;
+}
+#nav_menu li a:hover{
+    background: #1fcecb;
+}
+#nav_menu li li{
+    width: 180px;
+}
+#nav_menu li .second{
+    position: absolute;
+    display: none;
+    top: 100%;
+    right: 0;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: 0 0;
+    transition: .5s ease-in-out;
+}
+#nav_menu li:hover .second{
+    display: block;
+    opacity: 1;
+    transform: scaleY(1);
+}
+#nav_menu li li .third{
+    display: none;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: 0 0;
+    transition: .5s ease-in-out;
+}
+#nav_menu li li:hover .third{
+    display: block;
+    opacity: 1;
+    transform: scaleY(1);
+}
+
+#rf, #lf{
+    margin:0;
+    padding:15px 0;
+    line-height:normal;
+}
+#lf p{
+    margin: 0 auto;
+}
+#rh{
+    display: inline-flex;
+    margin-left: auto;
+    margin-right: 0;
+}
