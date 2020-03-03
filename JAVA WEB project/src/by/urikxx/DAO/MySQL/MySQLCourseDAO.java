@@ -1,11 +1,10 @@
 package by.urikxx.DAO.MySQL;
 
 import by.urikxx.DAO.Interfaces.CourseDAO;
-import by.urikxx.Main;
-import by.urikxx.classes.Course;
-import by.urikxx.classes.Feedback;
-import by.urikxx.classes.Student;
-import by.urikxx.classes.Teacher;
+import by.urikxx.models.Course;
+import by.urikxx.models.Feedback;
+import by.urikxx.models.Student;
+import by.urikxx.models.Teacher;
 import by.urikxx.util.ConfigurationManager;
 import org.apache.log4j.Logger;
 
@@ -15,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -24,8 +22,67 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
     @Override
     public int insertCourse(Course course) {
         int row = 0;
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().insert_courses_sql);
+            preparedStatement.setString(1, course.getName());
+            preparedStatement.setInt(2, course.getTeacher().getId());
+            row = preparedStatement.executeUpdate();
+
+        } catch (Exception ex) {
+            logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
+        }
+        return row;
+    }
+
+    @Override
+    public int insertCourse(String courseName, int teacherId) {
+        int row = 0;
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().insert_courses_sql);
+            preparedStatement.setString(1, courseName);
+            preparedStatement.setInt(2, teacherId);
+            row = preparedStatement.executeUpdate();
+
+        } catch (Exception ex) {
+            logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
+        }
+        return row;
+    }
+
+    @Override
+    public int entryToCourse(int courseId, int studentId) {
+        int row = 0;
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().insert_courses_students_sql);
+            preparedStatement.setInt(1, courseId);
+            preparedStatement.setInt(2, studentId);
+            row = preparedStatement.executeUpdate();
+
+        } catch (Exception ex) {
+            logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
+        }
+        return row;
+    }
+
+
+    /*public int insertCourse(Course course) {
+        int row = 0;
         try (Connection conn = getConnection()) {
-            System.out.println("Connection to DB successful!");
             Statement statement = conn.createStatement();
             PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().insert_courses_sql);
             preparedStatement.setString(1, course.getName());
@@ -45,7 +102,9 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
             logger.warn(ex.getMessage());
         }
         return row;
-    }
+    }*/
+
+
 
     @Override
     public ArrayList<Course> getCourses() {
@@ -53,20 +112,21 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection conn = null;
         try {
-            System.out.println("Connection to DB successful!");
             conn = connectionPool.getConnection();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(ConfigurationManager.getInstance().select_courses_sql);
             courses = new ArrayList<>();
             while (resultSet.next()) {
                 courses.add(new Course(resultSet.getInt(1), resultSet.getString(2),
-                                        getTeacherOnCourse(resultSet.getInt(1)),
+                                        getTeacherOnCourse(resultSet.getInt(3)),
                                         getStudentsOnCourse(resultSet.getInt(1)),
                                         resultSet.getBoolean(4)));
             }
 
         } catch (Exception ex) {
             logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
         }
         return courses;
     }
@@ -83,15 +143,16 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            System.out.println("Connection to DB successful!");
             PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().select_teacher_on_course_sql);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                teacher = new Teacher(resultSet.getInt(1), resultSet.getString(2));
+                teacher = new Teacher(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
             }
         } catch (Exception ex) {
             logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
         }
         return teacher;
     }
@@ -103,7 +164,6 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            System.out.println("Connection to DB successful!");
             PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().select_students_on_course_sql);
             preparedStatement.setInt(1, id);
 
@@ -111,29 +171,33 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
             students = new HashMap<>();
             while(resultSet.next()){
                 if (resultSet.getString(3) == null || resultSet.getString(4) == null )
-                    students.put(new Student( resultSet.getInt(1),resultSet.getString(2)), new Feedback());
+                    students.put(new Student( resultSet.getInt(1),resultSet.getString(2), resultSet.getString(3)), new Feedback());
                 else
-                    students.put(new Student( resultSet.getInt(1),resultSet.getString(2)), new Feedback(resultSet.getString(3),(Integer.parseInt(resultSet.getString(4)))));
+                    students.put(new Student( resultSet.getInt(1),resultSet.getString(2), resultSet.getString(3)), new Feedback(resultSet.getString(4),(Integer.parseInt(resultSet.getString(5)))));
             }
         } catch (Exception ex) {
             logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
         }
         return students;
     }
 
     @Override
-    public int finishCourse(int courseId) {
+    public int finishCourse(int courseId, int teacherId) {
         int row = 0;
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            System.out.println("Connection to DB successful!");
             PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().update_courses_sql);
             preparedStatement.setInt(1,courseId);
+            preparedStatement.setInt(1,teacherId);
             row = preparedStatement.executeUpdate();
         } catch (Exception ex) {
             logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
         }
         return row;
     }
@@ -145,7 +209,6 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            System.out.println("Connection to DB successful!");
             PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().insert_feedback_sql);
             preparedStatement.setString(1, feedback);
             preparedStatement.setInt(2, mark);
@@ -155,6 +218,8 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
         }
         catch(Exception ex){
             logger.warn(ex.getMessage());
+        }finally {
+            connectionPool.closeConnection(conn);
         }
         return row;
     }

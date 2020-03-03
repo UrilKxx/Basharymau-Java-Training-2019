@@ -1,6 +1,6 @@
 package by.urikxx.DAO.Interfaces;
 
-import by.urikxx.classes.Student;
+import by.urikxx.models.Student;
 
 import java.util.ArrayList;
 

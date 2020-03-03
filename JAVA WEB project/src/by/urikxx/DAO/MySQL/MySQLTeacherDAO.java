@@ -1,7 +1,7 @@
 package by.urikxx.DAO.MySQL;
 
 import by.urikxx.DAO.Interfaces.TeacherDAO;
-import by.urikxx.classes.Teacher;
+import by.urikxx.models.Teacher;
 import by.urikxx.util.ConfigurationManager;
 import org.apache.log4j.Logger;
 
@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MySQLTeacherDAO extends MySQLJDBC implements TeacherDAO {
     private static final Logger logger = Logger.getLogger(MySQLCourseDAO.class);
@@ -40,7 +39,7 @@ public class MySQLTeacherDAO extends MySQLJDBC implements TeacherDAO {
             ResultSet resultSet = statement.executeQuery(ConfigurationManager.getInstance().select_teachers_sql);
             teachers = new ArrayList<>();
             while(resultSet.next()){
-                teachers.add(new Teacher(resultSet.getInt(1), resultSet.getString(2)));
+                teachers.add(new Teacher(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3)));
             }
         } catch (Exception ex) {
             logger.warn(ex.getMessage());

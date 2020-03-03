@@ -17,12 +17,12 @@ public class ConfigurationManager {
     public String mysqlPassword = "JedwGerd176FG";
 
     public String select_courses_sql = "SELECT * FROM courses";
-    public String select_teacher_on_course_sql = "SELECT teachers.Id, teachers.TeacherName FROM teachers Where teachers.Id =?";
-    public String select_students_on_course_sql = "SELECT students.Id, students.StudentName, courses_students.Feedback, courses_students.Mark FROM courses INNER JOIN courses_students ON courses_students.CourseId = courses.Id INNER JOIN students ON courses_students.StudentId = students.Id WHERE courses.Id = ?";
+    public String select_teacher_on_course_sql = "SELECT users.id, users.user_name, users.login FROM users INNER JOIN user_roles ON users.id = user_roles.user_id WHERE user_roles.role_id = 1 AND users.id = ?";
+    public String select_students_on_course_sql = "SELECT users.id, users.user_name, users.login, courses_students.feedback, courses_students.mark FROM courses_students INNER JOIN users ON  courses_students.user_id = users.id INNER JOIN user_roles ON  users.id = user_roles.user_id WHERE user_roles.role_id = 2 AND courses_students.course_id = ?";
 
-    public String insert_courses_sql = "INSERT courses (CourseName, TeacherId, CourseEnd) VALUES (?, ? , ? )";
-    public String insert_feedback_sql = "NSERT courses_students (Feedback, Mark) VALUES (?, ?) WHERE CourseId = ? AND StudentId = ?";
-    public String insert_courses_students_sql = "INSERT courses_students (CourseId, StudentId, Feedback, Mark) VALUES (?,?,?,?)";
+    public String insert_courses_sql = "CALL add_course(?, ?);";
+    public String insert_feedback_sql = "UPDATE openclassroom.courses_students SET openclassroom.courses_students.feedback = ?, openclassroom.courses_students.mark = ? where openclassroom.courses_students.user_id = (select openclassroom.users.id from openclassroom.users where openclassroom.users.login = ? )";
+    public String insert_courses_students_sql = "CALL entry_to_course(?, ?)";
 
     public String update_courses_sql = "UPDATE courses SET CourseEnd = 1 WHERE Id =?";
 
@@ -31,6 +31,9 @@ public class ConfigurationManager {
 
     public String select_teachers_sql = "SELECT teachers.Id, teachers.TeacherName FROM teachers";
     public String insert_teacher_sql = "INSERT teachers (TeacherName) VALUES (?)";
+
+    public String insert_user_sql = "CALL user_registration(?, ?, ?, ?, ?, ?)";
+    public String select_user_sql = "CALL user_authorization(?, ?, ?, ?, ?, ?)";
 
     private static final ConfigurationManager configurationManager = new ConfigurationManager();
 
@@ -58,6 +61,10 @@ public class ConfigurationManager {
 
             select_teachers_sql = properties.getProperty("SELECT_TEACHERS_SQL");
             insert_teacher_sql = properties.getProperty("INSERT_TEACHER_SQL");
+
+            insert_user_sql = properties.getProperty("INSERT_USER_SQL");
+            select_user_sql = properties.getProperty("SELECT_USER_SQL");
+
 
         } catch (IOException ex) {
             logger.warn(ex.getMessage());
