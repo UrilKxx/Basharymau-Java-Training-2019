@@ -19,7 +19,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../CTF-eP_2" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="SvnConfiguration">
@@ -41,6 +41,7 @@
       <workItem from="1583075375958" duration="5653000" />
       <workItem from="1583101398456" duration="423000" />
       <workItem from="1583104918398" duration="598000" />
+      <workItem from="1583298835516" duration="29000" />
     </task>
     <servers />
   </component>
@@ -52,9 +53,10 @@
       <screen x="0" y="0" width="1858" height="1080" />
     </state>
     <state x="766" y="132" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1858.1080@0.0.1858.1080" timestamp="1582707142242" />
-    <state x="659" y="239" key="FileChooserDialogImpl" timestamp="1582693660915">
+    <state x="659" y="239" key="FileChooserDialogImpl" timestamp="1583298891292">
       <screen x="0" y="0" width="1858" height="1080" />
     </state>
+    <state x="659" y="239" key="FileChooserDialogImpl/0.0.1858.1080/1920.287.1920.1040@0.0.1858.1080" timestamp="1583298891292" />
     <state x="659" y="239" key="FileChooserDialogImpl/0.0.1858.1080@0.0.1858.1080" timestamp="1582693660915" />
     <state x="329" y="98" key="SettingsEditor" timestamp="1581483966061">
       <screen x="0" y="0" width="1858" height="1080" />

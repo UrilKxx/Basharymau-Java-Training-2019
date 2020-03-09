@@ -36,7 +36,8 @@ public class GetCoursesAction implements Action {
                 jstudent = new JSONObject();
                 jstudent.put("studentId", student.getKey().getId());
                 jstudent.put("studentName", student.getKey().getName());
-                jstudent.put("feedback", student.getValue().getFeedback() +" "+ student.getValue().getMark());
+                jstudent.put("feedback", student.getValue().getFeedback());
+                jstudent.put("mark", student.getValue().getMark());
                 jarray.put(jstudent);
             }
             jcourse.put("students",jarray);

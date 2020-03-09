@@ -27,8 +27,8 @@ public class Servlet extends HttpServlet {
         actionMap.put("addcourse", new AddCoursesAction());
         actionMap.put("getcourses", new GetCoursesAction());
         actionMap.put("entrytocourse", new EntryToCourseAction());
-        actionMap.put("finishcourse", new EntryToCourseAction());
-        actionMap.put("setfeedback", new EntryToCourseAction());
+        actionMap.put("finishcourse", new FinishCourseAction());
+        actionMap.put("setfeedback", new SetFeedbackAction());
     }
 
     @Override

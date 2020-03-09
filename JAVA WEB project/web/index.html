@@ -5,6 +5,8 @@
     <title>Факультатив</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'>
+    <link rel="shortcut icon" href="images/logo.png" height="50px" type="image/x-icon">
+
 </head>
     <body>
         <header>
@@ -59,13 +61,13 @@
                         </span>
                     </div>
                     <div class="nav_login_logout">
-                        <button type="button" id="login" onclick="openModal()">Вход</button>
-                        <button type="button" id="logout" class="hidden" onclick="logout()">Выход</button>
+                        <button type="button" id="login" onclick="openModalLogRegForm()"> Вход </button>
+                        <button type="button" id="logout" class="hidden" onclick="logout()"> Выход </button>
                     </div>
 
-                    <div id="openModal" class="modalDialog hidden">
+                    <div id="openModalLogRegForm" class="modalDialog hidden">
                         <div>
-                            <button class="close" onclick="closeModal()" title="Закрыть">X</button>
+                            <button class="close" onclick="closeModalLogRegForm()" title="Закрыть">X</button>
                             <div id="loginWindow" class="hidden">
                                 <form name="loginForm">
                                         <div class="loginWindowTitle">Вход</div>
@@ -125,13 +127,77 @@
                     <p>Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании существенных финансовых и административных условий. С другой стороны постоянное информационно-пропагандистское обеспечение нашей деятельности обеспечивает широкому кругу (специалистов) участие в формировании позиций, занимаемых участниками в отношении поставленных задач.</p>
                     <p>Значимость этих проблем настолько очевидна, что дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании новых предложений. Идейные соображения высшего порядка, а также укрепление и развитие структуры играет важную роль в формировании существенных финансовых и административных условий.</p>
                     <p>Повседневная практика показывает, что реализация намеченных плановых заданий в значительной степени обуславливает создание модели развития. С другой стороны укрепление и развитие структуры обеспечивает участие в формировании систем массового участия.</p> -->
-                    <table class="table_course" id="courses">
+                    <table class="table hidden" id="courses_for_students">
                         <caption>Курсы</caption>
                         <tr>
                             <th>Название факультатива</th>
-                            <th colspan="2">Имя преподавателя</th>
+                            <th>Имя преподавателя</th>
                         </tr>
-
+                    </table>
+                    <table class="table" id="courses_for_teachers">
+                        <div id="openModalAddCourse_SetFeedback" class="modalDialog hidden">
+                            <div>
+                                <button class="close" onclick="closeModalAddCourse_SetFeedback()" title="Закрыть">X</button>
+                                <div id="addCourseWindow" class="hidden">
+                                    <form name="addCourseWindowForm">
+                                        <div class="windowTitle">Добавить факультатив</div>
+                                        <span id="addCourseWindowFormMessage"></span>
+                                        <label>
+                                            <input type="text" placeholder="Введите название" name="name" minlength="3" maxlength="20" required>
+                                        </label>
+                                        <button class="modalDialogButton" type="submit">Добавить курс</button>
+                                    </form>
+                                </div>
+                                <div id="setFeedbackWindow" class="hidden">
+                                    <form name="setFeedbackForm">
+                                        <div class="windowTitle">Оставить отзыв</div>
+                                        <span id="setFeedbackFormMessage"></span>
+                                        <label>
+                                            <input type="text" placeholder="Введите отзыв" name="feedback" minlength="10" maxlength="50" required>
+                                        </label>
+                                        <label>
+                                            <input type="number" placeholder="Введите оценку" name="mark" min="1" max="10" minlength="1" maxlength="2" required>
+                                        </label>
+                                        <label>
+                                            <input class="hidden" type="number" name="courseid">
+                                        </label>
+                                        <label>
+                                            <input class="hidden" type="number" name="studentid">
+                                        </label>
+                                        <button class="modalDialogButton" type="submit">Оставить отзыв</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <caption>Курсы</caption>
+                        <tr>
+                            <th>Название факультатива</th>
+                            <th colspan="2"><button onclick="addCourseClick()"> Добавить курс </button></th>
+                        </tr>
+                        <tr>
+                            <th>ООП</th>
+                            <th><button> Закончить курс </button></th>
+                            <th><button id="open_student-on-course" onclick="openStudentOnCourse(1)"> ↓ </button>
+                                <button id="close_student-on-course" class="hidden" onclick="closeStudentOnCourse(1)"> ↑ </button>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <table class="table visible" id="students_on_course_1">
+                                    <tr>
+                                        <th>Имя студента</th>
+                                        <th colspan="3">Отзыв</th>
+                                        <th>Оценка</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Крук Кирилл Александрович</th>
+                                        <th colspan="3">-</th>
+                                        <th >-</th>
+                                        <th><button onclick="setFeedback(9)"> Оставить отзыв </button></th>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -140,6 +206,7 @@
             <div class="container">
                 <div id="lf">
                     © Башаримов Юрий Сергеевич ИТП-31 ЮКО Inc. Все права защищены
+                    <p id="date"></p>
                 </div>
                 <div class="rf">
                     <a href="https://vk.com/id117034606" ><img src="images/vk_icon-icons.com_66681.png" alt="Vk" width="25px" height="25px" ></a>

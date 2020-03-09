@@ -1,3 +1,4 @@
+
 function clock(){
     let date = new Date();
     let options = {
@@ -13,23 +14,28 @@ function clock(){
         caseFirst: 'upper'
     };
 
-    document.getElementById("lf").innerHTML ="© Башаримов Юрий Сергеевич ИТП-31 ЮКО Inc. Все права защищены <p>&nbsp; &nbsp;" + date.toLocaleString("RU", options) + "</p>";
-    setTimeout("clock()", 1000);
+    document.getElementById("date").innerHTML = date.toLocaleString("RU", options) + "</p>";
+    setInterval(clock, 1000);
 }
 
-window.onload = clock(), getCourses();
+document.addEventListener("DOMContentLoaded", () => {
+    clock(), getCourses()
+});
+
 window.onbeforeunload = logout();
-function openModal() {
-    document.getElementById("openModal").classList.remove("hidden");
+
+
+function openModalLogRegForm() {
+    document.getElementById("openModalLogRegForm").classList.remove("hidden");
     document.getElementsByTagName("body").item(0).style.overflow = "hidden";
-    clearForms();
+    clearLogRegForms();
     openLoginForm();
 }
 
-function closeModal() {
-    document.getElementById("openModal").classList.add("hidden");
+function closeModalLogRegForm() {
+    document.getElementById("openModalLogRegForm").classList.add("hidden");
     document.getElementsByTagName("body").item(0).style.overflow = "visible";
-    clearForms();
+    clearLogRegForms();
 }
 
 function openRegistrationForm() {
@@ -42,7 +48,7 @@ function openLoginForm() {
     document.getElementById("loginWindow").classList.remove("hidden");
 }
 
-function clearForms(){
+function clearLogRegForms(){
 
     document.forms.loginForm.elements.login.value = "";
     document.forms.loginForm.elements.password.value = "";
@@ -53,7 +59,7 @@ function clearForms(){
 }
 
 let user = null;
-
+let courses = null;
 init();
 
 function init() {
@@ -69,6 +75,16 @@ function init() {
         if (checkSignupForm()) {
             signup();
         }
+    };
+
+    document.forms.addCourseWindowForm.onsubmit = (e) => {
+        e.preventDefault();
+            addCourse();
+    };
+
+    document.forms.setFeedbackForm.onsubmit = (e) => {
+        e.preventDefault();
+            setFeedback();
     };
 }
 
@@ -112,8 +128,8 @@ function login() {
                 document.getElementById('login').classList.add("hidden");
                 document.getElementById('logout').classList.remove("hidden");
                 document.getElementById('user_name').innerText = user.name;
-
-                closeModal();
+                getCourses();
+                closeModalLoginForm();
 
             }
         }
@@ -149,7 +165,7 @@ function logout() {
     httpRequest.setRequestHeader('Content-Type', 'application/json');
     let json = JSON.stringify({
         action: "logout",
-        login: login,
+        login: login
     });
 
     httpRequest.send(json);
@@ -161,6 +177,8 @@ function logout() {
             document.getElementById('login').classList.remove("hidden");
             document.getElementById('logout').classList.add("hidden");
             document.getElementById('user_name').innerText = "Гость";
+
+            getCourses();
         }
     }
 
@@ -212,8 +230,8 @@ function signup() {
                 document.getElementById('login').classList.add("hidden");
                 document.getElementById('logout').classList.remove("hidden");
                 document.getElementById('user_name').innerText = user.name;
-
-                closeModal();
+                getCourses();
+                closeModalLoginForm();
 
             }
         }
@@ -254,6 +272,8 @@ function checkSignupForm() {
     return true;
 }
 
+/*Guest//Student*/
+
 function getCourses() {
 
     let httpRequest = new XMLHttpRequest();
@@ -271,20 +291,38 @@ function getCourses() {
 
     httpRequest.onload = () => {
         if (httpRequest.status === 200) {
-            getOpenCourses(httpRequest.response);
+
+            courses = httpRequest.response;
+
+            if (user == null || user.role[0] === "s" ){
+                document.getElementById('courses_for_teachers').classList.add("hidden");
+                let table = document.getElementById('courses_for_teachers');
+                while (table.rows.length != 1){
+                    table.deleteRow(1);
+                }
+                getOpenCourses( httpRequest.response);
+            } else if(user.role[0] === "t") {
+                document.getElementById('courses_for_students').classList.add("hidden");
+                let table = document.getElementById('courses_for_students');
+                while (table.rows.length != 1){
+                    table.deleteRow(1);
+                }
+                getTeacherCourse(httpRequest.response);
+            }
         }
     }
 }
 
 function getOpenCourses(response) {
-
+    let table = document.getElementById('courses_for_students');
+    while (table.rows.length != 1){
+        table.deleteRow(1);
+    }
     response.forEach((course) => {
-        let table = document.getElementById('courses');
         let row = table.insertRow(table.rows.length);
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
-        let n = course.courseId;
 
         if (course.courseEnd === false){
             cell1.appendChild(document.createTextNode(course.courseName));
@@ -297,10 +335,9 @@ function getOpenCourses(response) {
         }
     });
 
-    document.getElementById('courses').classList.remove("hidden");
+    document.getElementById('courses_for_students').classList.remove("hidden");
 
 }
-
 
 function entryToCourse(id) {
 
@@ -339,3 +376,246 @@ function entryToCourse(id) {
     }
 
 }
+
+/*teacher*/
+
+function getTeacherCourse(response) {
+    let table = document.getElementById('courses_for_teachers');
+    while (table.rows.length != 1){
+        table.deleteRow(1);
+    }
+    let html = ``;
+    response.forEach((course) => {
+        if (course.teacherName === user.name[0]){
+            html += `<tr>
+                        <th>${course.courseName}</th>`
+
+            if (course.courseEnd === false){
+                html += `<th><button onclick="endCourse(${course.courseId})"> Закончить курс </button></th>`
+            }else{
+                html += `<th>Курс окончен</th>`
+            }
+
+            html += `<th><button id="open_student-on-course_${course.courseId}" onclick="openStudentOnCourse(${course.courseId})"> ↓ </button>
+                        <button id="close_student-on-course_${course.courseId}" class="hidden" onclick="closeStudentOnCourse(${course.courseId})"> ↑ </button>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <table class="table hidden unvisible" id="students_on_course_${course.courseId}">
+                                <tr>
+                                    <th>Имя студента</th>
+                                    <th colspan="3">Отзыв</th>
+                                    <th>Оценка</th>
+                                </tr>`
+
+            course.students.forEach((student) => {
+                html += `<tr>
+                            <th>${student.studentName}</th>`
+                if (student.feedback === undefined && student.mark === undefined){
+                    html += `<th colspan="3">-</th><th >-</th>`;
+                    if (course.courseEnd === false){
+                        html += `<th>Курс не окончен</th>`;
+                    }else{
+                        html += `<th><button onclick="setFeedbackClick(${course.id},${student.id})" > Оставить отзыв </button></th>`;
+                    }
+
+                }else{
+                    html += `<th colspan="3">${student.feedback}</th><th >${student.mark}</th>`;
+                    if (course.courseEnd === false){
+                        html += `<th>Курс не окончен</th>`;
+                    }else{
+                        html += `<th></th>`;
+                    }
+                }
+                 html += `</tr>`;
+            });
+
+            html += `</table>
+                    </td>
+                </tr>`
+        }
+    });
+
+    document.getElementById('courses_for_teachers').lastChild.insertAdjacentHTML("beforeend", html);
+    document.getElementById('courses_for_teachers').classList.remove("hidden");
+
+
+}
+
+function openStudentOnCourse(id) {
+    document.getElementById('open_student-on-course_' + id).classList.add("hidden");
+    document.getElementById('close_student-on-course_' + id).classList.remove("hidden");
+    document.getElementById('students_on_course_' + id).classList.remove("hidden");
+    document.getElementById('students_on_course_' + id).classList.replace("unvisible", "visible");
+}
+
+function closeStudentOnCourse(id) {
+    document.getElementById('students_on_course_' + id).classList.replace("visible", "unvisible")
+    document.getElementById('students_on_course_' + id).classList.add("hidden");
+    document.getElementById('open_student-on-course_' + id).classList.remove("hidden");
+    document.getElementById('close_student-on-course_' + id).classList.add("hidden");
+}
+
+function endCourse(id) {
+    if (user == null){
+        alert("Войдите или зарегистрируйтесь");
+    }
+    else if(user.role == "s") {
+        alert("Как ты сюда попал, выруби живаааа");
+    }
+    else if(user.role == "t") {
+
+        let httpRequest = new XMLHttpRequest();
+        let siteUrl = new URL(document.URL);
+        let url = new URL("/api/", siteUrl.origin);
+        url.searchParams.set('action', "finishcourse");
+        url.searchParams.set('courseid', id);
+        httpRequest.open("POST", url);
+        httpRequest.responseType = "json";
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
+        let json = JSON.stringify({
+            action: "finishcourse",
+            courseid: id
+        });
+
+        httpRequest.send(json);
+
+        httpRequest.onload = () => {
+            if (httpRequest.status === 200) {
+                if (httpRequest.response.error != null) {
+                    alert(httpRequest.response.error);
+                }
+            }else if (httpRequest.status === 201){
+                alert("Успешно");
+            }
+        }
+    }
+}
+
+function clearAddCourse_SetFeedbackForms(){
+
+    document.forms.addCourseWindowForm.elements.name.value = "";
+    document.forms.setFeedbackForm.elements.feedback.value = "";
+    document.forms.setFeedbackForm.elements.mark.value = "";
+
+}
+
+function closeModalAddCourse_SetFeedback() {
+    document.getElementById("openModalAddCourse_SetFeedback").classList.add("hidden");
+    document.getElementById("addCourseWindow").classList.add("hidden");
+    document.getElementById("setFeedbackWindow").classList.add("hidden");
+    clearAddCourse_SetFeedbackForms();
+}
+
+function addCourseClick() {
+
+   if (user == null){
+        alert("Войдите или зарегистрируйтесь");
+    }
+    else if(user.role === "s") {
+        alert("Как ты сюда попал, выруби живаааа");
+    }
+    else if(user.role === "t") {
+       document.getElementById("openModalAddCourse_SetFeedback").classList.remove("hidden");
+       document.getElementById("addCourseWindow").classList.remove("hidden");
+       clearAddCourse_SetFeedbackForms();
+    }
+}
+
+function addCourse() {
+    document.getElementById("addCourseWindowFormMessage").innerHTML = "";
+
+    let coursename =  document.forms.addCourseWindowForm.elements.name.value;
+
+    let httpRequest = new XMLHttpRequest();
+    let siteUrl = new URL(document.URL);
+    let url = new URL("/api/", siteUrl.origin);
+    url.searchParams.set('action', "addcourse");
+    url.searchParams.set('coursename', coursename);
+    httpRequest.open("POST", url);
+    httpRequest.responseType = "json";
+    httpRequest.setRequestHeader('Content-Type', 'application/json');
+    let json = JSON.stringify({
+        action: "addcourse",
+        coursename: coursename
+    });
+
+    httpRequest.send(json);
+
+    httpRequest.onload = () => {
+        if (httpRequest.status === 200) {
+            if( httpRequest.response.error != null){
+                let loginFormMessage = document.getElementById("addCourseWindowFormMessage");
+                loginFormMessage.innerText = httpRequest.response.error;
+            }else{
+                alert("Успешно")
+                getCourses();
+                closeModalAddCourse_SetFeedback();
+            }
+        }
+    }
+
+}
+
+function setFeedbackClick(courseid, studentid) {
+    if (user == null){
+        alert("Войдите или зарегистрируйтесь");
+    }
+    else if(user.role === "s") {
+        alert("Как ты сюда попал, выруби живаааа");
+    }
+    else if(user.role === "t") {
+        document.getElementById("openModalAddCourse_SetFeedback").classList.remove("hidden");
+        document.getElementById("setFeedbackWindow").classList.remove("hidden");
+        document.forms.setFeedbackForm.elements.courseid.value = courseid;
+        document.forms.setFeedbackForm.elements.studentid.value = studentid;
+
+        clearAddCourse_SetFeedbackForms();
+    }
+}
+
+function setFeedback() {
+
+    document.getElementById("setFeedbackFormMessage").innerHTML = "";
+
+    let courseid =  document.forms.setFeedbackForm.elements.courseid.value;
+    let studentid =  document.forms.setFeedbackForm.elements.studentid.value;
+    let feedback =  document.forms.setFeedbackForm.elements.feedback.value;
+    let mark =  document.forms.setFeedbackForm.elements.mark.value;
+
+    let httpRequest = new XMLHttpRequest();
+    let siteUrl = new URL(document.URL);
+    let url = new URL("/api/", siteUrl.origin);
+    url.searchParams.set('action', "setfeedback");
+    url.searchParams.set('courseid', courseid);
+    url.searchParams.set('studentid', studentid);
+    url.searchParams.set('feedback', feedback);
+    url.searchParams.set('mark', mark);
+    httpRequest.open("POST", url);
+    httpRequest.responseType = "json";
+    httpRequest.setRequestHeader('Content-Type', 'application/json');
+    let json = JSON.stringify({
+        action: "setfeedback",
+        courseid: courseid,
+        studentid: studentid,
+        feedback: feedback,
+        mark: mark
+    });
+
+    httpRequest.send(json);
+
+    httpRequest.onload = () => {
+        if (httpRequest.status === 200) {
+            if( httpRequest.response.error != null){
+                let loginFormMessage = document.getElementById("addCourseWindowFormMessage");
+                loginFormMessage.innerText = httpRequest.response.error;
+            }else{
+                alert("Успешно")
+                getCourses();
+                closeModalAddCourse_SetFeedback();
+            }
+        }
+    }
+}
+

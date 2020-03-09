@@ -22,7 +22,7 @@ public class AddCoursesAction implements Action {
                     return;
                 }
 
-                String teacherIdStr = (String)session.getAttribute("name");
+                String teacherIdStr = (String)session.getAttribute("id");
                 int teacherId;
                 try {
                     teacherId = Integer.parseInt(teacherIdStr);
