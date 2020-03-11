@@ -192,7 +192,7 @@ public class MySQLCourseDAO extends MySQLJDBC implements CourseDAO {
             conn = connectionPool.getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(ConfigurationManager.getInstance().update_courses_sql);
             preparedStatement.setInt(1,courseId);
-            preparedStatement.setInt(1,teacherId);
+            preparedStatement.setInt(2,teacherId);
             row = preparedStatement.executeUpdate();
         } catch (Exception ex) {
             logger.warn(ex.getMessage());

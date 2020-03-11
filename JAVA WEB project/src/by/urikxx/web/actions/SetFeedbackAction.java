@@ -14,7 +14,7 @@ public class SetFeedbackAction implements Action {
         HttpSession session = request.getSession();
         if (session.getAttribute("login") != null) {
             String role = (String) session.getAttribute("role");
-            if (role.equals("t")){
+            if (role.equals("t")) {
                 String courseIdStr = request.getParameter("courseid");
                 String studentIdStr = request.getParameter("studentid");
                 String feedback = request.getParameter("feedback");
@@ -49,14 +49,17 @@ public class SetFeedbackAction implements Action {
                 }
                 int row = daoFactory.getCourseDAO().setFeedbacks(courseId, studentId, feedback, mark);
 
-                if (row > 0){
+                if (row > 0) {
                     response.setStatus(201);
+                    return;
                 }
-            }
-            else if (role.equals("s")){
+            } else if (role.equals("s")) {
                 response.setStatus(403);
+                return;
             }
-        } else
+        } else{
             response.setStatus(403);
+            return;
+        }
     }
 }

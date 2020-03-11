@@ -29,24 +29,22 @@ public class FinishCourseAction implements Action {
                     response.setStatus(400);
                     return;
                 }
-                String teacherIdStr = (String)session.getAttribute("id");
-                int teacherId;
-                try {
-                    teacherId = Integer.parseInt(teacherIdStr);
-                } catch (NumberFormatException e) {
-                    response.setStatus(400);
-                    return;
-                }
+                int teacherId = (Integer) session.getAttribute("userId");
+
                 int row = daoFactory.getCourseDAO().finishCourse(courseId, teacherId);
 
                 if (row > 0){
                     response.setStatus(201);
+                    return;
                 }
             }
             else if (role.equals("s")){
                 response.setStatus(403);
+                return;
             }
-        } else
+        } else{
             response.setStatus(403);
+            return;
+        }
     }
 }

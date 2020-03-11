@@ -22,14 +22,7 @@ public class AddCoursesAction implements Action {
                     return;
                 }
 
-                String teacherIdStr = (String)session.getAttribute("id");
-                int teacherId;
-                try {
-                    teacherId = Integer.parseInt(teacherIdStr);
-                } catch (NumberFormatException e) {
-                    response.setStatus(400);
-                    return;
-                }
+                int teacherId = (Integer)session.getAttribute("userId");
                 int row = daoFactory.getCourseDAO().insertCourse(courseName, teacherId);
 
                 if (row > 0){
